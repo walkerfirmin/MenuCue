@@ -1,0 +1,62 @@
+# Xcode / build products
+build/
+Build/
+DerivedData/
+*.xcuserstate
+*.xcuserdata
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+*.xcarchive.zip
+timeline.xctimeline
+playground.xcworkspace
+
+# Archives & installers (local release artifacts)
+*.dmg
+*.pkg
+export/
+ExportOptions.plist.local
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+# Keep Package.resolved committed for reproducible dependency versions.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Secrets / local env (none expected, but safe defaults)
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+AuthKey_*.p8
+
+# IDEs / editors
+.idea/
+*.swp
+*~
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Logs & scratch
+*.log
+menucue.log

@@ -1,0 +1,98 @@
+# MenuCue
+
+macOS command palette for any app’s menu bar. Press **⌥⌘P** to search and run menu commands (including Services / Quick Actions).
+
+See [report.md](report.md) for product analysis and [DISTRIBUTION.md](DISTRIBUTION.md) for notarization.
+
+## Requirements
+
+- macOS 13+
+- Xcode 15+
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
+
+## Build
+
+```bash
+cd /path/to/MenuCue
+xcodegen generate
+xcodebuild -scheme MenuCue -configuration Debug -derivedDataPath build/DerivedData build
+```
+
+Or open the project in Xcode:
+
+```bash
+xcodegen generate
+open MenuCue.xcodeproj
+```
+
+### Install for daily use
+
+Ad-hoc Debug builds work, but Accessibility trust is more stable when the app is signed and lives under `/Applications`:
+
+```bash
+APP=build/DerivedData/Build/Products/Debug/MenuCue.app
+
+# Optional but recommended: Apple Development identity (from `security find-identity -v -p codesigning`)
+codesign --force --deep --sign "Apple Development: Your Name (TEAMID)" \
+  --entitlements Sources/MenuCue.entitlements "$APP"
+
+rm -rf /Applications/MenuCue.app
+cp -R "$APP" /Applications/MenuCue.app
+codesign --force --deep --sign "Apple Development: Your Name (TEAMID)" \
+  --entitlements Sources/MenuCue.entitlements /Applications/MenuCue.app
+
+open /Applications/MenuCue.app
+```
+
+Logs (debug): `/tmp/menucue.log`
+
+## Permissions (System Settings)
+
+MenuCue needs these to work. Grant them the first time you launch, then quit and reopen if menus stay empty.
+
+### 1. Accessibility — required
+
+**System Settings → Privacy & Security → Accessibility → MenuCue → On**
+
+Without this, MenuCue cannot read or run other apps’ menus. The in-app onboarding and Preferences both link here.
+
+### 2. Allow in the Menu Bar — macOS Tahoe (26+)
+
+**System Settings → Menu Bar → Allow in the Menu Bar → MenuCue → On**
+
+(Or use **MenuCue → Menu Bar Settings…** from the menu bar extra.)
+
+Without this, the app can run but the menu bar icon stays hidden.
+
+### Not required
+
+- **Input Monitoring** — not used
+- **App Sandbox** — stays off (see entitlements) so Accessibility can reach other apps
+
+## Run
+
+1. Launch MenuCue (from Xcode, `open` on the built `.app`, or `/Applications/MenuCue.app`).
+2. Confirm Accessibility (and Menu Bar allow-list on Tahoe).
+3. Focus another app, then press **⌥⌘P**.
+4. Type to filter, **↑/↓** to move, **Return** to run the highlighted command.
+
+Default hotkey is **⌥⌘P**. If something else already owns **⇧⌘P**, MenuCue stays on ⌥⌘P. Change it under **Preferences… → General**.
+
+## Features
+
+- Global hotkey, floating palette, Accessibility menu scrape + cache, fuzzy search
+- Services / Automator Quick Actions (Preferences → Include Services menu)
+- Status item (MenuBarExtra), embedded Preferences, Accessibility onboarding
+- Per-app disable, exclude rules, command history, Tab submenu drill-down
+- Themes, launch at login, i18n aliases, AppleScript extensions, Sparkle hooks
+
+## Shortcuts
+
+| Key    | Action                                               |
+| ------ | ---------------------------------------------------- |
+| ⌥⌘P    | Toggle palette (configurable)                        |
+| ↑ / ↓  | Move selection                                       |
+| Return | Run highlighted command (first result if none moved) |
+| Tab    | Drill into submenu                                   |
+| Delete | Leave submenu scope (when search is empty)           |
+| Esc    | Clear query, leave scope, or dismiss                 |
