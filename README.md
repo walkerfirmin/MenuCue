@@ -2,7 +2,7 @@
 
 macOS command palette for any app’s menu bar. Press **⌥⌘P** to search and run menu commands (including Services / Quick Actions).
 
-See [report.md](report.md) for product analysis and [DISTRIBUTION.md](DISTRIBUTION.md) for notarization.
+See [DISTRIBUTION.md](DISTRIBUTION.md) for notarization.
 
 ## Requirements
 
@@ -82,9 +82,27 @@ Default hotkey is **⌥⌘P**. If something else already owns **⇧⌘P**, MenuC
 
 - Global hotkey, floating palette, Accessibility menu scrape + cache, fuzzy search
 - Services / Automator Quick Actions (Preferences → Include Services menu)
+- Quick Action Repo Manager (menu bar): searchable catalog, install to `~/Library/Services`, community index URLs
 - Status item (MenuBarExtra), embedded Preferences, Accessibility onboarding
 - Per-app disable, exclude rules, command history, Tab submenu drill-down
 - Themes, launch at login, i18n aliases, AppleScript extensions, Sparkle hooks
+
+## Quick Action Repo Manager
+
+Install Automator Quick Actions from a catalog, with docs and optional Homebrew dependencies.
+
+1. MenuCue menu bar icon → **Quick Action Repo Manager…**
+2. Search the combined catalog (official + any URLs you add).
+3. Open a package to read its README, review brew dependencies, then **Install**.
+4. Run installed actions from Finder Quick Actions or from the MenuCue palette (Preferences → Include Services menu).
+
+**Add a community catalog:** **Add Repository…** and paste an HTTPS `index.json` URL.
+
+**Author packages:** see [`QuickActionsCatalog/README.md`](QuickActionsCatalog/README.md). The official index ships in-repo under `QuickActionsCatalog/` and is mirrored into the app bundle for offline use.
+
+Default remote index:
+
+`https://raw.githubusercontent.com/walkerfirmin/MenuCue/main/QuickActionsCatalog/index.json`
 
 ## Shortcuts
 

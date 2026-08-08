@@ -1,0 +1,18 @@
+{
+  "id": "io.menucue.quickaction.copy-dir\r",
+  "name": "copy dir\r",
+  "version": "1.0.0\r",
+  "author": "MenuCue\r",
+  "readme": "README.md",
+  "workflow": "copy dir.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files",
+    "folders"
+  ],
+  "dependencies": {
+    "brew": []
+  },
+  "minMacOS": "13.0\r",
+  "checksum": "sha256:2eb5695831ed649aa77e3fda60fb94f92e4f17bb32f829dbf3a867af26b186f9"
+}

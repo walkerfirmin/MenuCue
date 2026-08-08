@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "name": "MenuCue Official",
+  "updatedAt": "2026-08-08",
+  "packages": [
+    {
+      "id": "io.menucue.quickaction.copy-path",
+      "name": "Copy Path",
+      "summary": "Copy POSIX paths of selected Finder items to the clipboard",
+      "version": "1.0.0",
+      "tags": ["finder", "clipboard", "path"],
+      "path": "packages/copy-path"
+    },
+    {
+      "id": "io.menucue.quickaction.convert-audio-to-mp3",
+      "name": "Convert Audio to MP3",
+      "summary": "Convert selected audio files to MP3 with ffmpeg",
+      "version": "1.0.0",
+      "tags": ["finder", "audio", "ffmpeg"],
+      "path": "packages/convert-audio-to-mp3"
+    }
+  ]
+}

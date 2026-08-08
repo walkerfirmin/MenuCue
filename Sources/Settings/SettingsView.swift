@@ -51,6 +51,9 @@ struct SettingsView: View {
                 Text("Automator Quick Actions and other Services")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                Button("Manage Quick Action repos…") {
+                    RepoManagerController.shared.show()
+                }
                 Toggle("Launch at login", isOn: $settings.launchAtLogin)
             }
             Section("History") {

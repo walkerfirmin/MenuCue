@@ -1,0 +1,18 @@
+{
+  "id": "io.menucue.quickaction.package-quick-action\r",
+  "name": "Package Quick Action",
+  "version": "1.0.0\r",
+  "author": "MenuCue\r",
+  "readme": "README.md",
+  "workflow": "Package Quick Action.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files",
+    "folders"
+  ],
+  "dependencies": {
+    "brew": []
+  },
+  "minMacOS": "13.0\r",
+  "checksum": "sha256:f47a5813e22347487a85e536ce746869023862eb558c7901ebaade06924d37bf"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "menucue",
+  "private": true,
+  "scripts": {
+    "start": "./scripts/build-install-run.sh"
+  }
+}

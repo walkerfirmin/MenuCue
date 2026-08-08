@@ -20,10 +20,10 @@ playground.xcworkspace
 *.pkg
 export/
 ExportOptions.plist.local
-
+*.zip
 # Swift Package Manager
 .swiftpm/
-Packages/
+# Packages/
 # Keep Package.resolved committed for reproducible dependency versions.
 
 # macOS

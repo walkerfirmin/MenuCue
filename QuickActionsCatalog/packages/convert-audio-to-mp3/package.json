@@ -1,0 +1,19 @@
+{
+  "id": "io.menucue.quickaction.convert-audio-to-mp3",
+  "name": "Convert Audio to MP3",
+  "version": "1.0.0",
+  "author": "MenuCue",
+  "readme": "README.md",
+  "workflow": "Convert Audio to MP3.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "audio files"
+  ],
+  "dependencies": {
+    "brew": [
+      "ffmpeg"
+    ]
+  },
+  "minMacOS": "13.0",
+  "checksum": "sha256:36f987b369aa3b31356f496b23eb46520cd16c52c3b2e97a2b4fa7bed4efb797"
+}

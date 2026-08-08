@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>534</string>
+	<key>AMApplicationVersion</key>
+	<string>2.10</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>Run Shell Script</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string>set -euo pipefail
+
+# Escape for embedding inside an AppleScript double-quoted string; newlines -&gt; " &amp; return &amp; "
+as_str() {
+  # Reads plain text on stdin; writes AppleScript-safe string body on stdout.
+  python3 -c 'import sys; s=sys.stdin.read(); sys.stdout.write(s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\" &amp; return &amp; \""))'
+}
+
+alert() {
+  local title="$1"
+  local msg="$2"
+  local t m
+  t=$(print -r -- "$title" | as_str)
+  m=$(print -r -- "$msg" | as_str)
+  osascript -e "display alert \"$t\" message \"$m\"" &gt;/dev/null 2&gt;&amp;1 || true
+}
+
+ask_text() {
+  local prompt="$1"
+  local default="${2:-}"
+  local p d
+  p=$(print -r -- "$prompt" | as_str)
+  d=$(print -r -- "$default" | as_str)
+  osascript &lt;&lt;OSA
+try
+  text returned of (display dialog "$p" default answer "$d" buttons {"Cancel", "OK"} default button "OK")
+on error number -128
+  return "__CANCEL__"
+end try
+OSA
+}
+
+confirm() {
+  local prompt="$1"
+  local p
+  p=$(print -r -- "$prompt" | as_str)
+  osascript &lt;&lt;OSA
+try
+  display dialog "$p" buttons {"Cancel", "Overwrite"} default button "Overwrite"
+  return "yes"
+on error number -128
+  return "no"
+end try
+OSA
+}
+
+to_slug() {
+  print -r -- "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g'
+}
+
+uti_to_receives() {
+  case "$1" in
+    public.audio) print -r -- "audio files" ;;
+    public.image) print -r -- "image files" ;;
+    public.movie|public.video) print -r -- "movie files" ;;
+    public.folder) print -r -- "folders" ;;
+    public.item|public.data|public.content) print -r -- "files, folders" ;;
+    *) print -r -- "" ;;
+  esac
+}
+
+infer_receives() {
+  local wf="$1"
+  local plist="$wf/Contents/Info.plist"
+  local types=()
+  local t mapped
+  if [[ ! -f "$plist" ]]; then
+    print -r -- "files, folders"
+    return
+  fi
+  while IFS= read -r t; do
+    [[ -n "$t" ]] || continue
+    mapped=$(uti_to_receives "$t")
+    if [[ -n "$mapped" ]]; then
+      types+=("$mapped")
+    fi
+  done &lt; &lt;(plutil -extract NSServices.0.NSSendFileTypes json -o - "$plist" 2&gt;/dev/null | python3 -c 'import json,sys
+try:
+  for x in json.load(sys.stdin):
+    print(x)
+except Exception:
+  pass' || true)
+  if (( ${#types[@]} == 0 )); then
+    print -r -- "files, folders"
+  else
+    print -r -- "${(j:, :)types}" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | awk 'NF &amp;&amp; !seen[$0]++' | paste -sd ', ' -
+  fi
+}
+
+if (( $# &lt; 1 )); then
+  alert "Package Quick Action" "Select exactly one .workflow file in Finder."
+  exit 1
+fi
+
+if (( $# &gt; 1 )); then
+  alert "Package Quick Action" "Select exactly one .workflow file (got $#)."
+  exit 1
+fi
+
+WF="$1"
+if [[ ! -d "$WF" ]]; then
+  alert "Package Quick Action" "Not a workflow bundle:
+$WF"
+  exit 1
+fi
+case "${WF:t}" in
+  *.workflow) ;;
+  *)
+    alert "Package Quick Action" "Selected item is not a .workflow:
+$WF"
+    exit 1
+    ;;
+esac
+
+CATALOG=$(osascript &lt;&lt;'OSA'
+try
+  set f to choose folder with prompt "Select your QuickActionsCatalog directory (the folder that contains index.json)"
+  return POSIX path of f
+on error number -128
+  return "__CANCEL__"
+end try
+OSA
+)
+if [[ "$CATALOG" == "__CANCEL__" || -z "$CATALOG" ]]; then
+  exit 0
+fi
+CATALOG="${CATALOG%/}"
+
+if [[ ! -f "$CATALOG/index.json" ]]; then
+  alert "Package Quick Action" "No index.json found in:
+$CATALOG
+
+Choose the catalog root that contains index.json."
+  exit 1
+fi
+
+DEFAULT_NAME="${WF:t:r}"
+NAME=$(ask_text "Display name (Services menu title):" "$DEFAULT_NAME")
+[[ "$NAME" != "__CANCEL__" ]] || exit 0
+[[ -n "$NAME" ]] || NAME="$DEFAULT_NAME"
+
+SLUG=$(to_slug "$NAME")
+[[ -n "$SLUG" ]] || SLUG="untitled-quick-action"
+
+PKG_ID=$(ask_text "Package id:" "io.menucue.quickaction.$SLUG")
+[[ "$PKG_ID" != "__CANCEL__" ]] || exit 0
+[[ -n "$PKG_ID" ]] || PKG_ID="io.menucue.quickaction.$SLUG"
+
+VERSION=$(ask_text "Version (semver):" "1.0.0")
+[[ "$VERSION" != "__CANCEL__" ]] || exit 0
+[[ -n "$VERSION" ]] || VERSION="1.0.0"
+
+AUTHOR=$(ask_text "Author:" "MenuCue")
+[[ "$AUTHOR" != "__CANCEL__" ]] || exit 0
+[[ -n "$AUTHOR" ]] || AUTHOR="MenuCue"
+
+SUMMARY=$(ask_text "Summary (one line for the catalog index):" "")
+[[ "$SUMMARY" != "__CANCEL__" ]] || exit 0
+if [[ -z "$SUMMARY" ]]; then
+  alert "Package Quick Action" "Summary is required."
+  exit 1
+fi
+
+TAGS_RAW=$(ask_text "Tags (comma-separated, optional):" "finder")
+[[ "$TAGS_RAW" != "__CANCEL__" ]] || exit 0
+
+BREW_RAW=$(ask_text "Homebrew dependencies (comma-separated formula names, optional):" "")
+[[ "$BREW_RAW" != "__CANCEL__" ]] || exit 0
+
+DEFAULT_RECV=$(infer_receives "$WF")
+RECV_RAW=$(ask_text "servicesReceives (comma-separated):" "$DEFAULT_RECV")
+[[ "$RECV_RAW" != "__CANCEL__" ]] || exit 0
+[[ -n "$RECV_RAW" ]] || RECV_RAW="$DEFAULT_RECV"
+
+MIN_MACOS=$(ask_text "Minimum macOS version:" "13.0")
+[[ "$MIN_MACOS" != "__CANCEL__" ]] || exit 0
+[[ -n "$MIN_MACOS" ]] || MIN_MACOS="13.0"
+
+PKG_DIR="$CATALOG/packages/$SLUG"
+WF_NAME="${WF:t}"
+
+if [[ -e "$PKG_DIR" ]]; then
+  OVER=$(confirm "Package folder already exists:
+$PKG_DIR
+
+Overwrite?")
+  if [[ "$OVER" != "yes" ]]; then
+    exit 0
+  fi
+  rm -rf "$PKG_DIR"
+fi
+
+mkdir -p "$PKG_DIR"
+ditto "$WF" "$PKG_DIR/$WF_NAME"
+
+(
+  cd "$PKG_DIR"
+  rm -f workflow.zip
+  ditto -c -k --sequesterRsrc --keepParent "$WF_NAME" workflow.zip
+)
+
+CHECKSUM="sha256:$(shasum -a 256 "$PKG_DIR/workflow.zip" | awk '{print $1}')"
+
+export PKG_DIR WF_NAME PKG_ID NAME VERSION AUTHOR SUMMARY TAGS_RAW BREW_RAW RECV_RAW MIN_MACOS CHECKSUM CATALOG SLUG
+python3 &lt;&lt;'PY'
+import json, os, datetime, re
+from pathlib import Path
+
+def split_csv(s):
+    return [p.strip() for p in re.split(r"\s*,\s*", s or "") if p.strip()]
+
+pkg_dir = Path(os.environ["PKG_DIR"])
+tags = split_csv(os.environ.get("TAGS_RAW", ""))
+brew = split_csv(os.environ.get("BREW_RAW", ""))
+receives = split_csv(os.environ.get("RECV_RAW", ""))
+
+package = {
+    "id": os.environ["PKG_ID"],
+    "name": os.environ["NAME"],
+    "version": os.environ["VERSION"],
+    "author": os.environ["AUTHOR"],
+    "readme": "README.md",
+    "workflow": os.environ["WF_NAME"],
+    "workflowZip": "workflow.zip",
+    "servicesReceives": receives,
+    "dependencies": {"brew": brew},
+    "minMacOS": os.environ["MIN_MACOS"],
+    "checksum": os.environ["CHECKSUM"],
+}
+
+(pkg_dir / "package.json").write_text(json.dumps(package, indent=2) + "\n", encoding="utf-8")
+
+name = os.environ["NAME"]
+summary = os.environ["SUMMARY"]
+deps_section = "None.\n"
+if brew:
+    lines = "\n".join(f"brew install {f}" for f in brew)
+    deps_section = f"```bash\n{lines}\n```\n\nMenuCue can run this for you when you install the Quick Action (after confirmation).\n"
+
+readme = f"""# {name}
+
+{summary}
+
+## Dependencies
+
+{deps_section}
+## How to use
+
+1. Install any dependencies listed above (if any).
+2. Select matching items in Finder.
+3. Right-click → Quick Actions → **{name}**, or run it from MenuCue’s palette under Services.
+"""
+(pkg_dir / "README.md").write_text(readme, encoding="utf-8")
+
+catalog = Path(os.environ["CATALOG"])
+index_path = catalog / "index.json"
+index = json.loads(index_path.read_text(encoding="utf-8"))
+summary_entry = {
+    "id": os.environ["PKG_ID"],
+    "name": os.environ["NAME"],
+    "summary": os.environ["SUMMARY"],
+    "version": os.environ["VERSION"],
+    "tags": tags,
+    "path": f"packages/{os.environ['SLUG']}",
+}
+pkgs = index.get("packages") or []
+replaced = False
+for i, p in enumerate(pkgs):
+    if p.get("id") == summary_entry["id"] or p.get("path") == summary_entry["path"]:
+        pkgs[i] = summary_entry
+        replaced = True
+        break
+if not replaced:
+    pkgs.append(summary_entry)
+index["packages"] = pkgs
+index["updatedAt"] = datetime.date.today().isoformat()
+if "schemaVersion" not in index:
+    index["schemaVersion"] = 1
+index_path.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+print(str(pkg_dir))
+PY
+
+alert "Package Quick Action" "Packaged successfully:
+$PKG_DIR
+
+Checksum: $CHECKSUM"
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/zsh</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>C1B2C3D4-E5F6-7890-ABCD-000000000001</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>Script</string>
+					<string>Command</string>
+					<string>Run</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>C1B2C3D4-E5F6-7890-ABCD-000000000002</string>
+				<key>UUID</key>
+				<string>C1B2C3D4-E5F6-7890-ABCD-000000000003</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>673.000000:184.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.workflow</string>
+	</dict>
+</dict>
+</plist>

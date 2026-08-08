@@ -1,0 +1,18 @@
+{
+  "id": "io.menucue.quickaction.copy-path",
+  "name": "Copy Path",
+  "version": "1.0.0",
+  "author": "MenuCue",
+  "readme": "README.md",
+  "workflow": "Copy Path.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files",
+    "folders"
+  ],
+  "dependencies": {
+    "brew": []
+  },
+  "minMacOS": "13.0",
+  "checksum": "sha256:8b2c029ba77fece47c162f50fcaa43f4f5fc679d87ead483763e749d9623a033"
+}

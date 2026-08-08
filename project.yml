@@ -25,6 +25,12 @@ targets:
           - "**/*.applescript"
           - "**/README.txt"
           - "Info.plist"
+          - "QuickActionsCatalog"
+      - path: Resources/QuickActionsCatalog
+        type: folder
+        buildPhase: resources
+        excludes:
+          - "**/.DS_Store"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: io.menucue.app

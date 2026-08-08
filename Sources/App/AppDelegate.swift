@@ -18,6 +18,12 @@ struct MenuCueApp: App {
 
             Divider()
 
+            Button("Quick Action Repo Manager…") {
+                Task { @MainActor in
+                    RepoManagerController.shared.show()
+                }
+            }
+
             Button("Preferences…") {
                 appDelegate.showSettings()
             }
