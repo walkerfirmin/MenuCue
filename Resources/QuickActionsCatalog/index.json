@@ -8,7 +8,11 @@
       "name": "Copy Path",
       "summary": "Copy POSIX paths of selected Finder items to the clipboard",
       "version": "1.0.0",
-      "tags": ["finder", "clipboard", "path"],
+      "tags": [
+        "finder",
+        "clipboard",
+        "path"
+      ],
       "path": "packages/copy-path"
     },
     {
@@ -16,8 +20,32 @@
       "name": "Convert Audio to MP3",
       "summary": "Convert selected audio files to MP3 with ffmpeg",
       "version": "1.0.0",
-      "tags": ["finder", "audio", "ffmpeg"],
+      "tags": [
+        "finder",
+        "audio",
+        "ffmpeg"
+      ],
       "path": "packages/convert-audio-to-mp3"
+    },
+    {
+      "id": "io.menucue.quickaction.package-quick-action",
+      "name": "Package Quick Action",
+      "summary": "this is the summary",
+      "version": "1.0.0",
+      "tags": [
+        "finder"
+      ],
+      "path": "packages/package-quick-action"
+    },
+    {
+      "id": "io.menucue.quickaction.copy-dir",
+      "name": "copy dir",
+      "summary": "This will copy the directory of the selected item in finder",
+      "version": "1.0.0",
+      "tags": [
+        "finder"
+      ],
+      "path": "packages/copy-dir"
     }
   ]
 }

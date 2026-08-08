@@ -3,9 +3,9 @@ import Foundation
 final class QuickActionCatalogStore {
     static let shared = QuickActionCatalogStore()
 
-    /// Official remote index (raw GitHub). Fetch may fail until published; bundled fallback always works.
+    /// Official remote index (GitHub Pages). Fetch may fail until published; bundled fallback always works.
     static let defaultIndexURLString =
-        "https://raw.githubusercontent.com/walkerfirmin/MenuCue/main/QuickActionsCatalog/index.json"
+        "https://walkerfirmin.github.io/MenuCue/index.json"
 
     private let defaults = UserDefaults.standard
     private let encoder = JSONEncoder()

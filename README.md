@@ -98,11 +98,11 @@ Install Automator Quick Actions from a catalog, with docs and optional Homebrew 
 
 **Add a community catalog:** **Add Repository…** and paste an HTTPS `index.json` URL.
 
-**Author packages:** see [`QuickActionsCatalog/README.md`](QuickActionsCatalog/README.md). The official index ships in-repo under `QuickActionsCatalog/` and is mirrored into the app bundle for offline use.
+**Author packages:** see [`QuickActionsCatalog/README.md`](QuickActionsCatalog/README.md). Source lives under `QuickActionsCatalog/`; zips are generated for GitHub Pages and into the app bundle for offline use.
 
-Default remote index:
+Default remote index (GitHub Pages):
 
-`https://raw.githubusercontent.com/walkerfirmin/MenuCue/main/QuickActionsCatalog/index.json`
+`https://walkerfirmin.github.io/MenuCue/index.json`
 
 ## Shortcuts
 

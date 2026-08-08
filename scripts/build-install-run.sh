@@ -37,6 +37,11 @@ resolve_identity() {
 echo "==> Stopping MenuCue (if running)"
 pkill -x MenuCue 2>/dev/null || true
 
+echo "==> Building Quick Actions catalog into Resources"
+"$ROOT/scripts/build-quick-actions-catalog.sh" \
+  "$ROOT/QuickActionsCatalog" \
+  "$ROOT/Resources/QuickActionsCatalog"
+
 echo "==> Generating Xcode project"
 xcodegen generate
 
