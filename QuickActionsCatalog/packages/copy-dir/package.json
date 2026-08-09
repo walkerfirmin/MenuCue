@@ -1,8 +1,8 @@
 {
-  "id": "io.menucue.quickaction.copy-dir\r",
-  "name": "copy dir\r",
-  "version": "1.0.0\r",
-  "author": "MenuCue\r",
+  "id": "com.betternowapps.menucue.quickaction.copy-dir",
+  "name": "copy dir",
+  "version": "1.0.0",
+  "author": "MenuCue",
   "readme": "README.md",
   "workflow": "copy dir.workflow",
   "workflowZip": "workflow.zip",
@@ -13,6 +13,6 @@
   "dependencies": {
     "brew": []
   },
-  "minMacOS": "13.0\r",
+  "minMacOS": "13.0",
   "checksum": "sha256:2eb5695831ed649aa77e3fda60fb94f92e4f17bb32f829dbf3a867af26b186f9"
 }

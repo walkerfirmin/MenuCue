@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>Convert Audio to MP3</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.menucue.quickaction.convert-audio-to-mp3</string>
+	<string>com.betternowapps.menucue.quickaction.convert-audio-to-mp3</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>

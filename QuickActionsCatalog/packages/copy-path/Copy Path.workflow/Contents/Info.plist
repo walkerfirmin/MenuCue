@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>Copy Path</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.menucue.quickaction.copy-path</string>
+	<string>com.betternowapps.menucue.quickaction.copy-path</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>

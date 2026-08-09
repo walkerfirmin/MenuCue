@@ -1,8 +1,8 @@
 {
-  "id": "io.menucue.quickaction.package-quick-action\r",
+  "id": "com.betternowapps.menucue.quickaction.package-quick-action",
   "name": "Package Quick Action",
-  "version": "1.0.0\r",
-  "author": "MenuCue\r",
+  "version": "1.0.0",
+  "author": "MenuCue",
   "readme": "README.md",
   "workflow": "Package Quick Action.workflow",
   "workflowZip": "workflow.zip",
@@ -13,6 +13,6 @@
   "dependencies": {
     "brew": []
   },
-  "minMacOS": "13.0\r",
+  "minMacOS": "13.0",
   "checksum": "sha256:f47a5813e22347487a85e536ce746869023862eb558c7901ebaade06924d37bf"
 }

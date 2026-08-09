@@ -1,5 +1,5 @@
 {
-  "id": "io.menucue.quickaction.copy-path",
+  "id": "com.betternowapps.menucue.quickaction.copy-path",
   "name": "Copy Path",
   "version": "1.0.0",
   "author": "MenuCue",
@@ -14,5 +14,5 @@
     "brew": []
   },
   "minMacOS": "13.0",
-  "checksum": "sha256:517f7bf0b58c3baf6a9307710c3f0e304728e825cd38dfd42f14177ee9ad2d38"
+  "checksum": "sha256:cee759ee628056059b560713e4b55981b9a262428e8c8298718a30e26eb3b166"
 }

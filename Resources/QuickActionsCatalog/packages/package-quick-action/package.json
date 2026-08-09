@@ -1,5 +1,5 @@
 {
-  "id": "io.menucue.quickaction.package-quick-action",
+  "id": "com.betternowapps.menucue.quickaction.package-quick-action",
   "name": "Package Quick Action",
   "version": "1.0.0",
   "author": "MenuCue",
@@ -14,5 +14,5 @@
     "brew": []
   },
   "minMacOS": "13.0",
-  "checksum": "sha256:120e4a07e032811153c82b08ac4d9be5a472348782732bbe292cc745cd071538"
+  "checksum": "sha256:46ab1da60e2a714158178fdc666e73232572aa459be40809bb37032c31e4823c"
 }
