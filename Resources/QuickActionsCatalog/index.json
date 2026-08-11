@@ -4,7 +4,7 @@
   "updatedAt": "2026-08-08",
   "packages": [
     {
-      "id": "com.betternowapps.menucue.quickaction.copy-path",
+      "id": "com.walkerfirmin.menucue.quickaction.copy-path",
       "name": "Copy Path",
       "summary": "Copy POSIX paths of selected Finder items to the clipboard",
       "version": "1.0.0",
@@ -16,7 +16,7 @@
       "path": "packages/copy-path"
     },
     {
-      "id": "com.betternowapps.menucue.quickaction.convert-audio-to-mp3",
+      "id": "com.walkerfirmin.menucue.quickaction.convert-audio-to-mp3",
       "name": "Convert Audio to MP3",
       "summary": "Convert selected audio files to MP3 with ffmpeg",
       "version": "1.0.0",
@@ -28,7 +28,7 @@
       "path": "packages/convert-audio-to-mp3"
     },
     {
-      "id": "com.betternowapps.menucue.quickaction.package-quick-action",
+      "id": "com.walkerfirmin.menucue.quickaction.package-quick-action",
       "name": "Package Quick Action",
       "summary": "this is the summary",
       "version": "1.0.0",
@@ -38,7 +38,7 @@
       "path": "packages/package-quick-action"
     },
     {
-      "id": "com.betternowapps.menucue.quickaction.copy-dir",
+      "id": "com.walkerfirmin.menucue.quickaction.copy-dir",
       "name": "copy dir",
       "summary": "This will copy the directory of the selected item in finder",
       "version": "1.0.0",

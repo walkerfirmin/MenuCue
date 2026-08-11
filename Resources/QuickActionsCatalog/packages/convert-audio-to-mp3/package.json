@@ -1,5 +1,5 @@
 {
-  "id": "com.betternowapps.menucue.quickaction.convert-audio-to-mp3",
+  "id": "com.walkerfirmin.menucue.quickaction.convert-audio-to-mp3",
   "name": "Convert Audio to MP3",
   "version": "1.0.0",
   "author": "MenuCue",
@@ -15,5 +15,5 @@
     ]
   },
   "minMacOS": "13.0",
-  "checksum": "sha256:f3df1ef2bc9a0b419cb7e11ee241e575963d3f3c17a8a58098fcc11d589e8208"
+  "checksum": "sha256:f00902e248932893696a245448bea9113dc1856539f063a455e5da5e41a919a5"
 }

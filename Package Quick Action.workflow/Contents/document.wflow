@@ -203,9 +203,9 @@ NAME=$(ask_text "Display name (Services menu title):" "$DEFAULT_NAME")
 SLUG=$(to_slug "$NAME")
 [[ -n "$SLUG" ]] || SLUG="untitled-quick-action"
 
-PKG_ID=$(ask_text "Package id:" "com.betternowapps.menucue.quickaction.$SLUG")
+PKG_ID=$(ask_text "Package id:" "com.walkerfirmin.menucue.quickaction.$SLUG")
 [[ "$PKG_ID" != "__CANCEL__" ]] || exit 0
-[[ -n "$PKG_ID" ]] || PKG_ID="com.betternowapps.menucue.quickaction.$SLUG"
+[[ -n "$PKG_ID" ]] || PKG_ID="com.walkerfirmin.menucue.quickaction.$SLUG"
 
 VERSION=$(ask_text "Version (semver):" "1.0.0")
 [[ "$VERSION" != "__CANCEL__" ]] || exit 0

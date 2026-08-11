@@ -371,7 +371,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.betternowapps.menucue.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.walkerfirmin.menucue.app;
 				PRODUCT_NAME = MenuCue;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
@@ -402,7 +402,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.betternowapps.menucue.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.walkerfirmin.menucue.app;
 				PRODUCT_NAME = MenuCue;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;

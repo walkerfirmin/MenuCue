@@ -1,6 +1,6 @@
 name: MenuCue
 options:
-  bundleIdPrefix: com.betternowapps.menucue
+  bundleIdPrefix: com.walkerfirmin.menucue
   deploymentTarget:
     macOS: "13.0"
   createIntermediateGroups: true
@@ -33,7 +33,7 @@ targets:
           - "**/.DS_Store"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.betternowapps.menucue.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.walkerfirmin.menucue.app
         PRODUCT_NAME: MenuCue
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "2"
