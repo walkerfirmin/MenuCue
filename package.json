@@ -2,6 +2,7 @@
   "name": "menucue",
   "private": true,
   "scripts": {
-    "start": "./scripts/build-install-run.sh"
+    "start": "./scripts/build-install-run.sh",
+    "release": "./scripts/build-release-dmg.sh"
   }
 }

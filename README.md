@@ -2,13 +2,20 @@
 
 macOS command palette for any app’s menu bar. Press **⌥⌘P** to search and run menu commands (including Services / Quick Actions).
 
-See [DISTRIBUTION.md](DISTRIBUTION.md) for notarization.
-
 ## Requirements
 
 - macOS 13+
 - Xcode 15+
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
+
+## Release DMG
+
+Signed (and notarized) installer disk image:
+
+```bash
+./scripts/build-release-dmg.sh
+# or: npm run release
+```
 
 ## Build
 
