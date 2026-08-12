@@ -178,7 +178,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             Open System Settings → Menu Bar → Allow in the Menu Bar, then turn MenuCue ON.
 
-            You can also use ⇧⌘P anytime to open the palette.
+            You can also use ⌥⌘P anytime to open the palette.
             """
         alert.addButton(withTitle: "Open Menu Bar Settings")
         alert.addButton(withTitle: "Dismiss")
