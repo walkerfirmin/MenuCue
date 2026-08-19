@@ -158,6 +158,7 @@ struct RepoManagerView: View {
                 detail
                     .frame(minWidth: 360)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             if let status = model.statusMessage {
                 Divider()
                 Text(status)
@@ -168,6 +169,15 @@ struct RepoManagerView: View {
                     .padding(.vertical, 6)
             }
         }
+        .frame(
+            minWidth: 600,
+            idealWidth: 960,
+            maxWidth: .infinity,
+            minHeight: 420,
+            idealHeight: 600,
+            maxHeight: .infinity,
+            alignment: .top
+        )
         .onAppear { model.refresh() }
         .sheet(isPresented: $model.showAddRepo) {
             addRepoSheet

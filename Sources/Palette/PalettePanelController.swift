@@ -51,9 +51,7 @@ final class PalettePanelController: NSObject, NSWindowDelegate, NSTextFieldDeleg
         panel?.collectionBehavior = [.fullScreenAuxiliary, .transient]
         panel?.orderFrontRegardless()
         panel?.makeKeyAndOrderFront(nil)
-        if panel?.makeFirstResponder(searchField) != true {
-            searchField.window?.makeFirstResponder(searchField)
-        }
+        focusSearchField(selectAll: false)
         // Force key status for accessory apps on Tahoe.
         if panel?.isKeyWindow != true {
             panel?.becomeKey()
@@ -67,7 +65,9 @@ final class PalettePanelController: NSObject, NSWindowDelegate, NSTextFieldDeleg
             self.ignoringResign = false
             NSApp.activate(ignoringOtherApps: true)
             self.panel?.makeKeyAndOrderFront(nil)
-            self.panel?.makeFirstResponder(self.searchField)
+            if !self.searchFieldHasFocus() {
+                self.focusSearchField(selectAll: false)
+            }
             self.installClickOutsideMonitor()
             MenuCueDebug.log("panel settle key=\(self.panel?.isKeyWindow ?? false)")
         }
@@ -117,7 +117,48 @@ final class PalettePanelController: NSObject, NSWindowDelegate, NSTextFieldDeleg
     }
 
     func setQuery(_ text: String) {
-        searchField?.stringValue = text
+        guard let searchField else { return }
+        if searchField.stringValue == text { return }
+
+        if let editor = searchField.currentEditor() as? NSTextView {
+            editor.string = text
+            let length = (text as NSString).length
+            editor.selectedRange = NSRange(location: length, length: 0)
+        } else {
+            searchField.stringValue = text
+        }
+    }
+
+    private func searchFieldHasFocus() -> Bool {
+        guard let panel, let searchField else { return false }
+        let responder = panel.firstResponder
+        if responder === searchField { return true }
+        if let editor = searchField.currentEditor(), responder === editor { return true }
+        return false
+    }
+
+    private func moveSearchCaretToEnd() {
+        guard let editor = searchField.currentEditor() as? NSTextView else { return }
+        let length = (editor.string as NSString).length
+        editor.selectedRange = NSRange(location: length, length: 0)
+    }
+
+    private func focusSearchField(selectAll: Bool = false) {
+        guard let panel, let searchField else { return }
+
+        if searchFieldHasFocus() {
+            if !selectAll {
+                moveSearchCaretToEnd()
+            }
+            return
+        }
+
+        panel.makeFirstResponder(searchField)
+        if selectAll, let editor = searchField.currentEditor() as? NSTextView {
+            editor.selectAll(nil)
+        } else {
+            moveSearchCaretToEnd()
+        }
     }
 
     func setResults(
@@ -425,7 +466,9 @@ final class PalettePanelController: NSObject, NSWindowDelegate, NSTextFieldDeleg
         // Auto-dismiss here caused flash-close on Tahoe when focus shifted during show.
         if ignoringResign { return }
         DispatchQueue.main.async { [weak self] in
-            self?.panel?.makeFirstResponder(self?.searchField)
+            guard let self, let panel = self.panel, panel.isVisible else { return }
+            if self.searchFieldHasFocus() { return }
+            self.focusSearchField(selectAll: false)
         }
     }
 
@@ -478,7 +521,11 @@ final class KeyableSearchField: NSTextField {
         case 36, 76: onSpecialKey?(.return); return
         case 53: onSpecialKey?(.escape); return
         case 48: onSpecialKey?(.tab); return
-        case 51: onSpecialKey?(.delete); return
+        case 51:
+            if stringValue.isEmpty {
+                onSpecialKey?(.delete)
+                return
+            }
         default: break
         }
         super.keyDown(with: event)
