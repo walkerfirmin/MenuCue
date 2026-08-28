@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "MenuCue Official",
-  "updatedAt": "2026-08-08",
+  "updatedAt": "2026-08-28",
   "packages": [
     {
       "id": "com.walkerfirmin.menucue.quickaction.copy-path",
@@ -46,6 +46,18 @@
         "finder"
       ],
       "path": "packages/copy-dir"
+    },
+    {
+      "id": "com.walkerfirmin.menucue.quickaction.de-quarantine",
+      "name": "De-Quarantine",
+      "summary": "Remove the quarantine extended attribute from selected Finder items",
+      "version": "1.0.0",
+      "tags": [
+        "finder",
+        "security",
+        "quarantine"
+      ],
+      "path": "packages/de-quarantine"
     }
   ]
 }

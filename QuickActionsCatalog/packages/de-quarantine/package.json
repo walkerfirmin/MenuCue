@@ -1,0 +1,17 @@
+{
+  "id": "com.walkerfirmin.menucue.quickaction.de-quarantine",
+  "name": "De-Quarantine",
+  "version": "1.0.0",
+  "author": "MenuCue",
+  "readme": "README.md",
+  "workflow": "de-quarantine.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files"
+  ],
+  "dependencies": {
+    "brew": []
+  },
+  "minMacOS": "13.0",
+  "checksum": "sha256:7b5836fe5c4bf5c37faf434a8db48bad34f23ec5d8cfba1930a44b890e80dfbb"
+}
