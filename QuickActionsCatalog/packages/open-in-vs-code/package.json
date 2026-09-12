@@ -1,0 +1,20 @@
+{
+  "id": "io.menucue.quickaction.open-in-vs-code\r",
+  "name": "Open in VS Code\r",
+  "version": "1.0.0\r",
+  "author": "MenuCue\r",
+  "readme": "README.md",
+  "workflow": "Open in VS Code.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files",
+    "folders"
+  ],
+  "dependencies": {
+    "brew": [
+      "visual-studio-code"
+    ]
+  },
+  "minMacOS": "13.0\r",
+  "checksum": "sha256:7040663cde69233f0dc85e53aeee416460487353d78463269482ce326000fea9"
+}
