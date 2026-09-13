@@ -4,5 +4,11 @@
 <dict>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
+	<key>SUFeedURL</key>
+	<string>https://walkerfirmin.github.io/MenuCue/appcast.xml</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUPublicEDKey</key>
+	<string>dXNie/zOTj/g4M9e4InL2F9k5mhoPzaEUPmIZ9TpsKE=</string>
 </dict>
 </plist>

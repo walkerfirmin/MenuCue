@@ -1,0 +1,20 @@
+{
+  "id": "io.menucue.quickaction.open-in-cursor",
+  "name": "Open in Cursor",
+  "version": "1.0.0",
+  "author": "MenuCue",
+  "readme": "README.md",
+  "workflow": "Open in Cursor.workflow",
+  "workflowZip": "workflow.zip",
+  "servicesReceives": [
+    "files",
+    "folders"
+  ],
+  "dependencies": {
+    "brew": [
+      "cursor"
+    ]
+  },
+  "minMacOS": "13.0",
+  "checksum": "sha256:5eb7e1879889e47f05405282485f65aee305715ddad73f02390cdda25756a7e2"
+}

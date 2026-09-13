@@ -1,11 +1,13 @@
-name: Deploy Quick Actions Catalog
+name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
       - "QuickActionsCatalog/**"
+      - "sparkle/**"
       - "scripts/build-quick-actions-catalog.sh"
+      - "scripts/build-pages-site.sh"
       - ".github/workflows/deploy-catalog-pages.yml"
   workflow_dispatch:
 
@@ -25,13 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build catalog site
-        run: ./scripts/build-quick-actions-catalog.sh build/catalog-site
+      - name: Build Pages site (catalog + appcast)
+        run: ./scripts/build-pages-site.sh build/pages-site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/catalog-site
+          path: build/pages-site
 
   deploy:
     needs: build

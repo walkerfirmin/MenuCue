@@ -26,6 +26,10 @@ final class UpdateController: NSObject, SPUUpdaterDelegate {
         )
     }
 
+    func setAutomaticChecksEnabled(_ enabled: Bool) {
+        updaterController?.updater.automaticallyChecksForUpdates = enabled
+    }
+
     func checkForUpdates() {
         guard updaterController != nil else {
             let alert = NSAlert()

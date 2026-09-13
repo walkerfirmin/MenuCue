@@ -17,6 +17,8 @@ Signed (and notarized) installer disk image:
 # or: npm run release
 ```
 
+Sparkle updates, keys, GitHub Releases, and PersonalSite Download sync: see [`DISTRIBUTION.md`](DISTRIBUTION.md).
+
 ## Build
 
 ```bash
@@ -92,7 +94,7 @@ Default hotkey is **⌥⌘P**. If something else already owns **⇧⌘P**, MenuC
 - Quick Action Repo Manager (menu bar): searchable catalog, install to `~/Library/Services`, community index URLs
 - Status item (MenuBarExtra), embedded Preferences, Accessibility onboarding
 - Per-app disable, exclude rules, command history, Tab submenu drill-down
-- Themes, launch at login, i18n aliases, AppleScript extensions, Sparkle hooks
+- Themes, launch at login, i18n aliases, AppleScript extensions, Sparkle auto-updates
 
 ## Quick Action Repo Manager
 

@@ -191,14 +191,11 @@ struct SettingsView: View {
 
     private var updatesTab: some View {
         Form {
-            Section("Sparkle") {
+            Section("Updates") {
                 Toggle("Check for updates automatically", isOn: $settings.automaticUpdates)
                 Button("Check for Updates Now…") {
                     UpdateController.shared?.checkForUpdates()
                 }
-                Text("Configure SUFeedURL in Info.plist before shipping.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)

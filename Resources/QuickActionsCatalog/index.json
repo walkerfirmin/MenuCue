@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "MenuCue Official",
-  "updatedAt": "2026-08-28",
+  "updatedAt": "2026-09-12",
   "packages": [
     {
       "id": "com.walkerfirmin.menucue.quickaction.copy-path",
@@ -58,6 +58,26 @@
         "quarantine"
       ],
       "path": "packages/de-quarantine"
+    },
+    {
+      "id": "io.menucue.quickaction.open-in-cursor",
+      "name": "Open in Cursor",
+      "summary": "Open file or directory in Cursor",
+      "version": "1.0.0",
+      "tags": [
+        "finder"
+      ],
+      "path": "packages/open-in-cursor"
+    },
+    {
+      "id": "io.menucue.quickaction.open-in-vs-code",
+      "name": "Open in VS Code",
+      "summary": "Open file or folder in VS Code",
+      "version": "1.0.0",
+      "tags": [
+        "finder"
+      ],
+      "path": "packages/open-in-vs-code"
     }
   ]
 }

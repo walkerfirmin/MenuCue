@@ -55,7 +55,10 @@ final class SettingsStore: ObservableObject {
     }
 
     @Published var automaticUpdates: Bool {
-        didSet { defaults.set(automaticUpdates, forKey: Keys.automaticUpdates) }
+        didSet {
+            defaults.set(automaticUpdates, forKey: Keys.automaticUpdates)
+            UpdateController.shared?.setAutomaticChecksEnabled(automaticUpdates)
+        }
     }
 
     private(set) var rulesEngine: RulesEngine
