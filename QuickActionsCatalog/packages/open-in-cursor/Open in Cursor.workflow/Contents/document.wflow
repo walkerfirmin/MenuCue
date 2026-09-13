@@ -62,10 +62,19 @@
 					<string>#!/bin/bash
 FILE="$1"
 
-if ! open -a Cursor "$FILE" 2&gt;/dev/null; then
+CURSOR_BIN=""
+if [ -x "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" ]; then
+  CURSOR_BIN="/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+elif command -v cursor &gt;/dev/null 2&gt;&amp;1; then
+  CURSOR_BIN="$(command -v cursor)"
+fi
+
+if [ -z "$CURSOR_BIN" ]; then
   osascript -e 'display notification "Cursor not found. Is it installed?" with title "Open in Cursor"'
   exit 1
-fi</string>
+fi
+
+"$CURSOR_BIN" --classic "$FILE"</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
