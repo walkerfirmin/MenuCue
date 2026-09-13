@@ -187,8 +187,18 @@ rm -f "${TMP_DMG}"
 rm -rf "${STAGE_DIR}"
 
 echo "==> Signing DMG"
-codesign --force --timestamp --sign "${IDENTITY}" "${DMG_PATH}"
-codesign --verify --verbose=2 "${DMG_PATH}"
+dmg_signed=0
+for attempt in 1 2 3 4 5; do
+  if codesign --force --timestamp --sign "${IDENTITY}" "${DMG_PATH}"; then
+    if codesign --verify --verbose=2 "${DMG_PATH}"; then
+      dmg_signed=1
+      break
+    fi
+  fi
+  echo "    codesign timestamp failed (attempt ${attempt}/5); retrying…" >&2
+  sleep 3
+done
+[[ "${dmg_signed}" -eq 1 ]] || die "failed to codesign DMG with timestamp after retries"
 
 if [[ "${SKIP_NOTARIZE:-0}" == "1" ]]; then
   echo "==> SKIP_NOTARIZE=1 — left unsigned-for-Gatekeeper until notarized"
