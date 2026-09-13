@@ -40,16 +40,30 @@ Public key is already set in [`project.yml`](project.yml) as `INFOPLIST_KEY_SUPu
 - **Feed URL:** `https://walkerfirmin.github.io/MenuCue/appcast.xml`
 - **Private key:** never commit; keep in `~/Documents/Certs/` or a CI secret.
 
+## Full deploy (recommended)
+
+```bash
+npm run deploy -- 1.0.3          # auto-increments CURRENT_PROJECT_VERSION
+npm run deploy -- 1.0.3 5        # explicit build number
+NOTES="…" npm run deploy -- 1.0.3
+```
+
+Runs: version bump → `build-release-dmg.sh` → `gh release create` → `publish-sparkle-appcast.sh` → commit/push MenuCue → update/push PersonalSite `platforms.json`.
+
+Env overrides: `PERSONAL_SITE_DIR`, `SKIP_PERSONAL_SITE=1`, `SKIP_PUSH=1`, `SKIP_NOTARIZE=1`, `DRY_RUN=1`.
+
+After PersonalSite push, **redeploy Cloud Run** so https://walkerfirmin.com/apps/MenuCue reflects the new Download URL.
+
 ## Version bump
 
-Before each ship, edit [`project.yml`](project.yml):
+Before each ship, edit [`project.yml`](project.yml) (or let `deploy-release.sh` do it):
 
 - `MARKETING_VERSION` — user-facing (e.g. `1.0.2`)
 - `CURRENT_PROJECT_VERSION` — integer build number (must increase)
 
 Then `xcodegen generate` (the release script does this).
 
-## Build signed DMG
+## Build signed DMG only
 
 ```bash
 ./scripts/build-release-dmg.sh

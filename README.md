@@ -8,9 +8,19 @@ macOS command palette for any app’s menu bar. Press **⌥⌘P** to search and 
 - Xcode 15+
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
 
-## Release DMG
+## Full deploy
 
-Signed (and notarized) installer disk image:
+One command ships version bump, notarized DMG, GitHub Release, Sparkle appcast, MenuCue push (Pages), and PersonalSite `downloadUrl` update:
+
+```bash
+npm run deploy -- 1.0.3          # build number = current + 1
+npm run deploy -- 1.0.3 5        # explicit build number
+NOTES="Bug fixes" npm run deploy -- 1.0.3
+```
+
+Then redeploy PersonalSite to Cloud Run so the marketing Download button updates. Details: [`DISTRIBUTION.md`](DISTRIBUTION.md).
+
+## Build signed DMG only
 
 ```bash
 ./scripts/build-release-dmg.sh
