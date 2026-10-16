@@ -3,6 +3,15 @@
     <channel>
         <title>MenuCue</title>
         <item>
+            <title>1.0.4</title>
+            <pubDate>Fri, 16 Oct 2026 16:45:31 -0500</pubDate>
+            <link>https://walkerfirmin.com/apps/MenuCue</link>
+            <sparkle:version>6</sparkle:version>
+            <sparkle:shortVersionString>1.0.4</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/walkerfirmin/MenuCue/releases/download/1.0.4/MenuCue-1.0.4.dmg" length="2590108" type="application/octet-stream" sparkle:edSignature="qJv6l/yRgs0t+/oDkOib6rE6U3L0yrZUp8ot6FUTOpFA5jQQo95y3XQuRkWJ21Bc8TPgmvcflVZOnmITes3+Cg=="/>
+        </item>
+        <item>
             <title>1.0.3</title>
             <pubDate>Sat, 12 Sep 2026 19:45:40 -0500</pubDate>
             <link>https://walkerfirmin.com/apps/MenuCue</link>
