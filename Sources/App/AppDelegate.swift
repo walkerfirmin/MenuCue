@@ -158,9 +158,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showMenuBarAllowListGuidanceIfNeeded() {
-        // Only prompt once per day.
-        let key = "hasShownMenuBarAllowListGuidance"
-        if let last = UserDefaults.standard.object(forKey: key) as? Date,
+        let defaults = UserDefaults.standard
+        let lastShownKey = "hasShownMenuBarAllowListGuidance"
+        let showCountKey = "menuBarAllowListGuidanceShowCount"
+        let suppressKey = "menuBarAllowListGuidanceSuppressed"
+
+        if defaults.bool(forKey: suppressKey) { return }
+
+        let showCount = defaults.integer(forKey: showCountKey)
+        if showCount >= 3 { return }
+
+        // Only prompt once per day, and never more than three times.
+        if let last = defaults.object(forKey: lastShownKey) as? Date,
            Date().timeIntervalSince(last) < 24 * 60 * 60 {
             return
         }
@@ -169,7 +178,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // status-bar layer, the icon is likely blocked by the allow-list.
         if hasOnScreenStatusBarPresence() { return }
 
-        UserDefaults.standard.set(Date(), forKey: key)
+        defaults.set(Date(), forKey: lastShownKey)
+        defaults.set(showCount + 1, forKey: showCountKey)
 
         let alert = NSAlert()
         alert.messageText = "Enable MenuCue in the menu bar"
@@ -182,8 +192,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             """
         alert.addButton(withTitle: "Open Menu Bar Settings")
         alert.addButton(withTitle: "Dismiss")
+        alert.showsSuppressionButton = true
+        alert.suppressionButton?.title = "Don't show again"
+        alert.suppressionButton?.state = .off
         NSApp.activate(ignoringOtherApps: true)
-        if alert.runModal() == .alertFirstButtonReturn {
+        let response = alert.runModal()
+        if alert.suppressionButton?.state == .on {
+            defaults.set(true, forKey: suppressKey)
+        }
+        if response == .alertFirstButtonReturn {
             openMenuBarSettings()
         }
     }
